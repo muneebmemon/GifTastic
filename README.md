@@ -1,2 +1,2 @@
 # GifTastic
-This Homework assignment has to do with getting data by GIPHY API using AJAX and then displaying on to the webpage.
+This Homework assignment has to do with getting specific themed data (Animal's GIFs) from GIPHY API using AJAX & JQuery and then displaying it on to the webpage.
