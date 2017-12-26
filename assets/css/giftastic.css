@@ -1,0 +1,30 @@
+.animals{
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+#animalNames{
+    margin: 10px;
+}
+
+#imgColumn{
+    background-color: floralwhite;
+}
+
+.imgRow{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.animalImg{
+    cursor: pointer;
+}
+
+h4{
+    text-align:center;
+}
+
+body{
+    background-color: lightgray;
+}
+
