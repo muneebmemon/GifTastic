@@ -25,31 +25,43 @@ var animalsArray = [
     "Penguin"
 ];
 const API_KEY = "xMzKc3hIbBUzaz1esZB1VILg1Vqhw4Iu"; //storing API key in a constant
-
+var animalsDiv;
 // This function gets execute after document is ready
 $(function(){
+    "use strict";
+    animalsDiv = $("#animalNames");     //getting reference to Animal Names Div
     populateAnimalDiv();   //calling function to populate Animal div
-    $(document).on("click",".animals",fetchAnimalGifs); //registering click event on buttons   
+    $(document).on("click",".animals",fetchAnimalGifs); //registering click event on buttons
+
+    // registering click event for Submit button
+    $("#submitAnimal").on("click", function(){
+        var newAnimalName = $('#newAnimalName');
+        if (newAnimalName.val().trim()!==""){
+            animalsDiv.empty();
+            animalsArray.push(newAnimalName.val());
+            newAnimalName.val("");
+            populateAnimalDiv();
+        }
+    });
 });
 
 //function to populate Animal Div with Animal names in the array
 function populateAnimalDiv(){
-    var animalsDiv = $("#animalNames");
     animalsArray.forEach(function(animal){
         var animalBut = $("<button>");
         animalBut.addClass("animals btn btn-primary");
         animalBut.text(animal);
-        animalsDiv.append(animalBut);   
+        animalsDiv.append(animalBut);
     });
 }
 
 // This function fetch 10 selected animal gifs and then populate into the webpage
 function fetchAnimalGifs(){
-    
-    //setting up query URL 
+
+    //setting up query URL
     var animalName = $(this).text();
     var queryUrl = "https://api.giphy.com/v1/gifs/search?api_key=" + API_KEY + "&q=" + animalName + "&limit=10&offset=0&lang=en";
-    
+
     //calling ajax method to fetch JSON from end point
     $.ajax({
         url: queryUrl,
@@ -58,7 +70,7 @@ function fetchAnimalGifs(){
         for(var i=0 ; i<response.data.length ; i++){
             var imgDivElem = $("#imgDiv" + i);
             imgDivElem.empty();
-            
+
             //creating img tag with attributes for animal image
             var imgElem = $("<img>");
             imgElem.attr("src",response.data[i].images.original_still.url);
@@ -68,14 +80,18 @@ function fetchAnimalGifs(){
             imgElem.attr("data-stillURL",response.data[i].images.original_still.url);
             imgElem.attr("data-animateURL",response.data[i].images.original.url);
             imgElem.addClass("img-rounded center-block animalImg");
-            
+
             //creating h4 tag for rating display
             var ratingElem = $("<h4>");
             ratingElem.text("Rating: " + response.data[i].rating);
             imgDivElem.append(ratingElem);
-            imgDivElem.append(imgElem);     
+            imgDivElem.append(imgElem);
+            imgElem.hide();
+            ratingElem.hide();
+            imgElem.fadeIn(1000);
+            ratingElem.slideDown(1000);
         }
-        
+
         // registering click event on displayed images of animal
         $(".animalImg").on("click",function(){
                 var animalElement = $(this);
@@ -87,6 +103,6 @@ function fetchAnimalGifs(){
                     animalElement.attr("data-state","still");
                     animalElement.attr("src",animalElement.attr("data-stillURL"));
                 }
-        });       
+        });
     });
 }
